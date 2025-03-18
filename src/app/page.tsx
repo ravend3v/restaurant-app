@@ -1,10 +1,9 @@
 import React from 'react';
 
-export default function Page() {
+export default function Landing() {
   return (
     <div>
-      <h1>Page</h1>
-      <p>Find me in src/app/page.tsx</p>
+      <h1>Landing Page</h1>
     </div>
   );
 }
