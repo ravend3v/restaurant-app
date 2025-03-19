@@ -2,7 +2,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+When developing:
 
 ```bash
 npm run dev
@@ -13,6 +13,34 @@ pnpm dev
 # or
 bun dev
 ```
+
+## Docker Support
+
+First install Docker and Docker Compose according to the [official documentation](https://docs.docker.com/get-docker/).
+
+Then, build the Docker image:
+
+
+```bash
+docker-compose build
+```
+
+And run the Docker container:
+
+```bash
+docker-compose up
+```
+
+these have to be run when in the root directory of the project.
+
+
+## env.variables in development
+to run the project in development mode, you need to create a `.env` file in the root directory of the project and add variables from the `.env.example` file.
+
+link to the `.env.example` file: [`.env.example`](./.env.example)
+
+You can get these variables from the supabase project under project overwiew tab from the top of the screen `connect` and selecting app framework `Next.js` and then copying the variables from the `.env.example` file.
+additionaly the service role key can be found from settings -> Data API -> Service Role -> Copy the key.
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
