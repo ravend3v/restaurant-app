@@ -1,47 +1,62 @@
-import { createServerSupabaseClient } from "./lib/supabase/server";
+// src/middleware.ts
+import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
-import { NextRequest } from "next/server";
+import type { NextRequest } from "next/server";
 
-export async function middleware(req: NextRequest) {
-    console.log("Middleware called for:", req.nextUrl.pathname);
+export async function middleware(request: NextRequest) {
+  const response = NextResponse.next({
+    request: {
+      headers: request.headers,
+    },
+  });
 
-    const response = NextResponse.next({
-        request: {
-            headers: req.headers,
-        },
-    });
+  // Add security headers
+  response.headers.set("X-Content-Type-Options", "nosniff");
+  response.headers.set("X-Frame-Options", "DENY");
+  response.headers.set("X-XSS-Protection", "1; mode=block");
+  response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+  response.headers.set(
+    "Permissions-Policy",
+    "camera=(), microphone=(), geolocation=()"
+  );
 
-    const supabase = await createServerSupabaseClient();
+  // Add CORS headers for API routes
+  if (request.nextUrl.pathname.startsWith("/api/")) {
+    response.headers.set(
+      "Access-Control-Allow-Origin",
+      process.env.NEXT_PUBLIC_APP_URL || "*"
+    );
+    response.headers.set(
+      "Access-Control-Allow-Methods",
+      "GET, POST, PUT, DELETE, OPTIONS"
+    );
+    response.headers.set(
+      "Access-Control-Allow-Headers",
+      "Content-Type, Authorization"
+    );
+  }
 
-    const {
-        data: { session },
-    } = await supabase.auth.getSession();
+  const supabase = await createServerSupabaseClient();
 
-    console.log("Session:", session);
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
 
-    // Protected routes pattern
-    const isProtectedRoute = req.nextUrl.pathname.startsWith("/profile");
-    const isAuthRoute = req.nextUrl.pathname.startsWith("/auth");
+  // Protected routes pattern
+  const isProtectedRoute = request.nextUrl.pathname.startsWith("/profile");
+  const isAuthRoute = request.nextUrl.pathname.startsWith("/auth");
 
-    console.log("isProtectedRoute:", isProtectedRoute);
-    console.log("isAuthRoute:", isAuthRoute);
+  if (isProtectedRoute && !session) {
+    return NextResponse.redirect(new URL("login", request.url));
+  }
 
-    if (isProtectedRoute && !session) {
-        console.log("Redirecting to /login");
-        return NextResponse.redirect(new URL("/login", req.url));
-    }
+  if (isAuthRoute && session) {
+    return NextResponse.redirect(new URL("/dashboard", request.url));
+  }
 
-    if (isAuthRoute && session) {
-        console.log("Redirecting to /dashboard");
-        return NextResponse.redirect(new URL("/dashboard", req.url));
-    }
-
-    return response;
+  return response;
 }
 
 export const config = {
-    matcher: [
-      "/api/:path*",
-      "/((?!api|_next/static|_next/image|favicon.ico).*)",
-    ],
+  matcher: ["/api/:path*", "/((?!api|_next/static|_next/image|favicon.ico).*)"],
 };

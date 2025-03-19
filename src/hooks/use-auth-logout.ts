@@ -16,9 +16,6 @@ export function useAuthLogout(): UseAuthLogout {
     try {
       setLoading(true);
 
-      // Debugging
-      console.log("Logging out...");
-      
       const response = await fetch("/api/auth/logout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -30,13 +27,7 @@ export function useAuthLogout(): UseAuthLogout {
       }
 
       setUser(null);
-
-      // Debugging
-      console.log("Redirecting to /login");
-
       router.push("/login");
-
-      
 
     } catch (error) {
         console.error("Logout error", error);
