@@ -29,7 +29,7 @@ export function useAuthLogin(): UseAuthLogin {
       const { data: responseData } = await response.json();
       setUser(responseData.user);
 
-      router.push("/dashboard");
+      router.push("/");
     } catch (error) {
       console.error("Login error", error);
     } finally {
