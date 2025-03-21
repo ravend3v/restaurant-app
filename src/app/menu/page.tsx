@@ -81,7 +81,7 @@ export default function MenuPage() {
                 <div className='grid grid-cols-2 gap-4 w-[80%] items-center justify-center mx-auto'>
                     {/* Map through the selected category's items and display each */}
                     {menuItems[selectedCategory].map((item, index) => (
-                        <div key={index} className='bg-[#1F2937] rounded-lg p-4'>
+                        <div key={index} className='bg-[#1F2937] rounded-lg p-4 transform transition-transform duration-300 hover:scale-105'>
                             <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{item.title}</h5>
                             <p className="font-normal text-gray-700 dark:text-gray-400">
                                 {item.description}
