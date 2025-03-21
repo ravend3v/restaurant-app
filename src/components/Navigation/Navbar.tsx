@@ -1,5 +1,8 @@
 import Link from "next/link";
+import Image from "next/image";
 import { useAuthStore } from "@/lib/stores/use-auth-store";
+
+import '@/app/globals.css'
 
 export default function Navbar() {
     const { user } = useAuthStore();
@@ -12,7 +15,10 @@ export default function Navbar() {
                 </div>
                 <div className="flex items-center space-x-4 bg-black/55 p-4 rounded-xl">
                     <Link href="/">
-                        <button className=" hover:bg-[#831843] hover:cursor-pointer p-1 rounded-lg text-white">Home</button>
+                        <button className="flex items-center space-x-2 hover:bg-[#831843] hover:cursor-pointer p-1 rounded-lg text-white">
+                            <Image src="/home.svg" alt="home icon" width={24} height={24} />
+                            <span>Home</span>
+                        </button>
                     </Link>
                     {
                         /** 
@@ -22,11 +28,17 @@ export default function Navbar() {
                     }
                     {user ? (
                         <Link href="/profile">
-                            <button className="hover:bg-[#831843] hover:cursor-pointer p-1 rounded-lg text-white">Profile</button>
+                            <button className="flex items-center space-x-2 hover:bg-[#831843] hover:cursor-pointer p-1 rounded-lg text-white">
+                                <Image src="/user.svg" alt="user svg" width={24} height={24} />
+                                <span>Profile</span>
+                            </button>
                         </Link>
                     ) : (
                         <Link href="/login">
-                            <button className="hover:bg-[#831843] hover:cursor-pointer p-1 rounded-lg text-white">Login</button>
+                            <button className="flex items-center space-x-2 hover:bg-[#831843] hover:cursor-pointer p-1 rounded-lg text-white">
+                                <Image className="svg-icon" src="/login.svg" alt="login svg" width={24} height={24} />
+                                <span>Login</span>
+                            </button>
                         </Link>
                     )}    
 
