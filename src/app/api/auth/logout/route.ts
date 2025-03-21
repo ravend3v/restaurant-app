@@ -8,10 +8,7 @@ export async function POST() {
 
         if (error) throw error;
 
-        const response = NextResponse.json({ message: "Successfully logged out" });
-        response.headers.set('Set-Cookie', 'sb-access-token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; Secure; SameSite=Strict');
-
-        return response;
+        return NextResponse.json({ message: "Successfully logged out" });
     } catch (error) {
         console.log("Logout error", error);
         return NextResponse.json(
