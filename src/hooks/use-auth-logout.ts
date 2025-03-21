@@ -26,7 +26,7 @@ export function useAuthLogout(): UseAuthLogout {
         throw new Error(error.error);
       }
 
-      setUser(null);
+      setUser(null, null);
       router.push("/login");
 
     } catch (error) {

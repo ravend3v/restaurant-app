@@ -27,7 +27,7 @@ export function useAuthLogin(): UseAuthLogin {
       }
 
       const { data: responseData } = await response.json();
-      setUser(responseData.user);
+      setUser(responseData.user, responseData.user.role);
 
       router.push("/");
     } catch (error) {
